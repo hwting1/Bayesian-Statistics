@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:55468f261df9b093cb60fde9b8696e2eedeb8d66d6fba910dfa8d8358935982c
-size 135
+Position,Team,Points,QR
+1, Ireland,8,winners
+2, England,8,triple_crown
+3, Wales,6,
+4, France,6,
+5, Scotland,2,
+6, Italy,0,wooden_spoon
