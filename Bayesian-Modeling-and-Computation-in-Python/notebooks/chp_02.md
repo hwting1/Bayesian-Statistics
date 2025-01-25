@@ -469,16 +469,6 @@ Uniform distribution, and the gray band deviations of that Uniform
 distribution that we expect to see for a dataset of the same size.
 ```
 
-```python
-_, ax = plt.subplots(1, 2, figsize=(10, 4))
-az.plot_bpv(idata_b, kind="p_value", ax=ax[0])
-ax[0].legend([f"bpv={(Y.mean() > pred_dist.mean(1)).mean():.2f}"], handlelength=0)
-az.plot_bpv(idata_b, kind="u_value", ax=ax[1])
-ax[1].set_yticks([])
-ax[1].set_xticks([0., 0.5, 1.])
-plt.savefig("img/chp02/posterior_predictive_check_pu_values.png")
-```
-
 As we said before we can choose from many $T$ statistics to summarize
 observations and predictions.
 {numref}`fig:posterior_predictive_check_tstat` shows two examples, in
@@ -496,6 +486,16 @@ of simulations of predicted values with mean values less or equal than
 the observed data. On the second panel, the same but for the standard
 deviation. The black dot represented the mean (first panel) or standard
 deviation (second panel) computed from the observed data.
+```
+
+```python
+_, ax = plt.subplots(1, 2, figsize=(10, 4))
+az.plot_bpv(idata_b, kind="p_value", ax=ax[0])
+ax[0].legend([f"bpv={(Y.mean() > pred_dist.mean(1)).mean():.2f}"], handlelength=0)
+az.plot_bpv(idata_b, kind="u_value", ax=ax[1])
+ax[1].set_yticks([])
+ax[1].set_xticks([0., 0.5, 1.])
+plt.savefig("img/chp02/posterior_predictive_check_pu_values.png")
 ```
 
 ```python
@@ -583,6 +583,13 @@ using the ArviZ's functions `az.plot_ppc(.)`,
 `az.plot_bpv(., kind="p_values")` and `az.plot_bpv(., kind="u_values")`.
 ```
 
+Posterior predictive checks, either using plots or numerical summaries,
+or even a combination of both, is a very flexible idea. This concept is
+general enough to let the practitioner use their imagination to come up
+with different ways to explore, evaluate, and better understand model
+through their predictions and how well a model (or models) work for a
+particular problem.
+
 [^7]: Posterior predictive checks are a very general idea. These figures
     do not try to show the only available choices, just some of the
     options offered by ArviZ.
@@ -631,13 +638,6 @@ for idata, ax in zip(idatas, axes):
 
 plt.savefig("img/chp02/posterior_predictive_many_examples.png")
 ```
-
-Posterior predictive checks, either using plots or numerical summaries,
-or even a combination of both, is a very flexible idea. This concept is
-general enough to let the practitioner use their imagination to come up
-with different ways to explore, evaluate, and better understand model
-through their predictions and how well a model (or models) work for a
-particular problem.
 
 <!-- #region -->
 (diagnosing_inference)=
@@ -829,6 +829,16 @@ ESS estimates. The dashed lines represent the minimum suggested value of
 sufficient. Ideally, we want the local and quantile ESS to be high
 across all regions of the parameter space.
 ```
+
+As a general rule of thumb we recommend a value of ESS greater than 400,
+otherwise, the estimation of the ESS itself and the estimation of other
+quantities, like $\hat R$ that we will see next, will be basically
+unreliable {cite:p}`vehtari_rank_2019`. Finally, we said that the ESS provides
+the number of draws we would have if our sample was actually iid.
+Nevertheless, we have to be careful with this interpretation as the
+actual value of ESS will not be the same for different regions of the
+parameter space. Taking that detail into account, the intuition still
+seems useful.
 <!-- #endregion -->
 
 ```python
@@ -846,16 +856,6 @@ for ax_ in axes[:,1:].ravel():
 plt.ylim(-100, 5000)
 plt.savefig("img/chp02/plot_ess.png")
 ```
-
-As a general rule of thumb we recommend a value of ESS greater than 400,
-otherwise, the estimation of the ESS itself and the estimation of other
-quantities, like $\hat R$ that we will see next, will be basically
-unreliable {cite:p}`vehtari_rank_2019`. Finally, we said that the ESS provides
-the number of draws we would have if our sample was actually iid.
-Nevertheless, we have to be careful with this interpretation as the
-actual value of ESS will not be the same for different regions of the
-parameter space. Taking that detail into account, the intuition still
-seems useful.
 
 <!-- #region -->
 (potential-scale-reduction-factor-hat-r)=
@@ -905,17 +905,17 @@ Data variables:
     bad_chains0  float64 2.408
     bad_chains1  float64 1.033
 ```
-<!-- #endregion -->
-
-```python
-az.rhat(chains)
-```
 
 From this result we can see that $\hat R$ correctly identifies
 `good_chains` as a good sample and `bad_chains0` and `bad_chains1` as
 samples with different degree of problems. While `bad_chains0` is a
 total disaster, `bad_chains1` seems to be closer to reaching the
 *ok-chain status*, but still off.
+<!-- #endregion -->
+
+```python
+az.rhat(chains)
+```
 
 <!-- #region -->
 (Monte_Carlo_standard_error)=
@@ -1120,18 +1120,18 @@ autocorrelation. The tall bars in `bad_chains0` and `bad_chains1`
 indicate large values of autocorrelation, which is undesirable. The gray
 band represents the 95% confidence interval.
 ```
-<!-- #endregion -->
-
-```python
-az.plot_autocorr(chains, combined=True, figsize=(12, 4))
-plt.savefig('img/chp02/autocorrelation_plot.png')
-```
 
 What we see in {numref}`fig:autocorrelation_plot` is at least
 qualitatively expected after seeing the results from `az.ess`.
 `good_chains` shows essentially zero autocorrelation, `bad_chains0` is
 highly correlated and `bad_chains1` is not that bad, but autocorrelation
 is still noticeable and is long-range, i.e. it does not drop quickly.
+<!-- #endregion -->
+
+```python
+az.plot_autocorr(chains, combined=True, figsize=(12, 4))
+plt.savefig('img/chp02/autocorrelation_plot.png')
+```
 
 <!-- #region -->
 (rank-plots)=

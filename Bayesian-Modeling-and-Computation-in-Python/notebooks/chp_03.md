@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.16.4
+      jupytext_version: 1.16.6
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -287,16 +287,6 @@ there were any issues during sampling across the multiple sampling
 chains.
 ```
 
-```python
-az.summary(idata_adelie_mass)
-```
-
-```python
-axes = az.plot_trace(idata_adelie_mass, divergences="bottom", kind="rank_bars", figsize=(10, 4))
-
-plt.savefig("img/chp03/single_species_KDE_rankplot.png")
-```
-
 Comfortable with the fit we plot a posterior plot in
 {numref}`fig:SingleSpecies_Mass_PosteriorPlot` that combines all the
 chains. Compare the point estimates from {numref}`tab:penguin_mass_parameters_point_estimates` of the mean and
@@ -309,6 +299,16 @@ standard deviation with our Bayesian estimates as shown in
 Posterior plot of the posterior of the Bayesian model in Code Block
 [penguin_mass](penguin_mass) of Adelie penguins mass. The
 vertical lines are the empirical mean and standard deviation.
+```
+
+```python
+az.summary(idata_adelie_mass)
+```
+
+```python
+axes = az.plot_trace(idata_adelie_mass, divergences="bottom", kind="rank_bars", figsize=(10, 4))
+
+plt.savefig("img/chp03/single_species_KDE_rankplot.png")
 ```
 
 ```python
@@ -1022,6 +1022,18 @@ with pm.Model() as model_adelie_flipper_regression:
     inf_data_adelie_flipper_regression = pm.sample(return_inferencedata=True)
 ```
 
+To save space in the book we are not going to show the diagnostics each
+time but you should neither trust us or your sampler blindly. Instead
+you should run the diagnostics to verify you have a reliable posterior
+approximation.
+
+```{figure} figures/adelie_coefficient_posterior_plots.png
+:name: fig:adelie_coefficient_posterior_plots
+:width: 5in
+Estimates of the parameter value distributions of our linear regression
+coefficient from `model_adelie_flipper_regression`.
+```
+
 ```python
 adelie_flipper_length_obs = penguins.loc[adelie_mask, "flipper_length_mm"]
 
@@ -1036,18 +1048,6 @@ with pm.Model() as model_adelie_flipper_regression:
     mass = pm.Normal("mass", mu=μ, sigma=σ, observed=adelie_mass_obs)
 
     idata_adelie_flipper_regression = pm.sample()
-```
-
-To save space in the book we are not going to show the diagnostics each
-time but you should neither trust us or your sampler blindly. Instead
-you should run the diagnostics to verify you have a reliable posterior
-approximation.
-
-```{figure} figures/adelie_coefficient_posterior_plots.png
-:name: fig:adelie_coefficient_posterior_plots
-:width: 5in
-Estimates of the parameter value distributions of our linear regression
-coefficient from `model_adelie_flipper_regression`.
 ```
 
 ```python
@@ -1191,15 +1191,6 @@ with model_adelie_flipper_regression:
         inf_data_adelie_flipper_regression.posterior, var_names=["mass", "μ"])
 ```
 
-```python
-with model_adelie_flipper_regression:
-    # Change the underlying value to the mean observed flipper length
-    # for our posterior predictive samples
-    pm.set_data({"adelie_flipper_length": [adelie_flipper_length_obs.mean()]})
-    posterior_predictions = pm.sample_posterior_predictive(
-        idata_adelie_flipper_regression.posterior, var_names=["mass", "μ"])
-```
-
 In the first line of Code Block
 [penguins_ppd](penguins_ppd) we fix the value of our
 flipper length to the average observed flipper length. Then using the
@@ -1218,6 +1209,15 @@ evaluated at the mean flipper length in black. The black curve is wider
 as it describes the distribution of the predicted data (for a given
 flipper length), while the blue curve represents the distribution of
 just the mean of the predicted data.
+```
+
+```python
+with model_adelie_flipper_regression:
+    # Change the underlying value to the mean observed flipper length
+    # for our posterior predictive samples
+    pm.set_data({"adelie_flipper_length": [adelie_flipper_length_obs.mean()]})
+    posterior_predictions = pm.sample_posterior_predictive(
+        idata_adelie_flipper_regression.posterior, var_names=["mass", "μ"])
 ```
 
 ```python
@@ -1464,6 +1464,21 @@ with pm.Model() as model_penguin_mass_categorical:
         target_accept=.9, return_inferencedata=True)
 ```
 
+You will notice a new parameter, $\beta_{2}$ contributing to the value
+of $\mu$. As sex is a categorical predictor (in this example just female
+or male), we encode it as 1 and 0, respectively. For the model this
+means that the value of $\mu$, for females, is a sum over 3 terms while
+for males is a sum of two terms (as the $\beta_2$ term will zero out).
+
+```{figure} figures/adelie_sex_coefficient_posterior.png
+:name: fig:adelie_sex_coefficient_posterior
+:width: 7.00in
+Estimate of coefficient for sex covariate, $\beta_{2}$ in model. As male
+is encoded as 0, and female is encoded as 1, this indicates the
+additional mass we would expect between a male and female Adelie penguin
+with the same flipper length.
+```
+
 ```python
 # Binary encoding of the categorical predictor
 sex_obs = penguins.loc[adelie_mask ,"sex"].replace({"male":0, "female":1})
@@ -1480,21 +1495,6 @@ with pm.Model() as model_penguin_mass_categorical:
     mass = pm.Normal("mass", mu=μ, sigma=σ, observed=adelie_mass_obs)
 
     inf_data_penguin_mass_categorical = pm.sample(target_accept=.9)
-```
-
-You will notice a new parameter, $\beta_{2}$ contributing to the value
-of $\mu$. As sex is a categorical predictor (in this example just female
-or male), we encode it as 1 and 0, respectively. For the model this
-means that the value of $\mu$, for females, is a sum over 3 terms while
-for males is a sum of two terms (as the $\beta_2$ term will zero out).
-
-```{figure} figures/adelie_sex_coefficient_posterior.png
-:name: fig:adelie_sex_coefficient_posterior
-:width: 7.00in
-Estimate of coefficient for sex covariate, $\beta_{2}$ in model. As male
-is encoded as 0, and female is encoded as 1, this indicates the
-additional mass we would expect between a male and female Adelie penguin
-with the same flipper length.
 ```
 
 ```python
@@ -1627,16 +1627,6 @@ model and our single covariate model. This figure is generated from Code
 Block [forest_multiple_models](forest_multiple_models).
 ```
 
-```python
-axes = az.plot_forest(
-    [idata_adelie_mass, idata_adelie_flipper_regression, inf_data_penguin_mass_categorical],
-    model_names=["mass_only", "flipper_regression", "flipper_sex_regression"],
-    var_names=["σ"], combined=True, figsize=(10, 2))
-
-axes[0].set_title("σ Comparison 94.0 HDI")
-plt.savefig("img/chp03/singlespecies_multipleregression_forest_sigma_comparison.png")
-```
-
 ::: {admonition} More covariates is not always better
 
 All model fitting algorithms will find a signal, even if it is random noise. This phenomenon is called
@@ -1648,6 +1638,15 @@ simulated dataset {cite:p}`mcelreath_2020`. Even though there is no relation,
 we would be led to believe our linear model is doing quite well.
 :::
 
+```python
+axes = az.plot_forest(
+    [idata_adelie_mass, idata_adelie_flipper_regression, inf_data_penguin_mass_categorical],
+    model_names=["mass_only", "flipper_regression", "flipper_sex_regression"],
+    var_names=["σ"], combined=True, figsize=(10, 2))
+
+axes[0].set_title("σ Comparison 94.0 HDI")
+plt.savefig("img/chp03/singlespecies_multipleregression_forest_sigma_comparison.png")
+```
 
 (linear_counter_factuals)=
 
@@ -2198,6 +2197,23 @@ with pm.Model() as model_logistic_penguins_mass:
   - 0.001
 ```
 
+Our tabular summary in {numref}`table:logistic_penguins_mass` shows
+that $\beta_1$ is estimated to be 0 indicating there is not enough
+information in the mass covariate to separate the two classes. This is
+not necessarily a bad thing, just the model indicating to us that it
+does not find discernible difference in mass between these two species.
+This becomes quite evident once we plot the data and logistic regression
+fit in {numref}`fig:Logistic_mass`.
+
+```{figure} figures/Logistic_mass.png
+:name: fig:Logistic_mass
+:width: 7.00in
+Plot of the observed data and logistic regression for
+`model_logistic_penguins_mass`. Unlike
+{numref}`fig:Logistic_bill_length` the data does not look very separable
+and our model did discern one as well.
+```
+
 ```python
 mass_obs = penguins.loc[species_filter, "body_mass_g"].values
 
@@ -2224,23 +2240,6 @@ az.plot_trace(idata_logistic_penguins_mass, var_names=["β_0", "β_1"], kind="ra
 
 ```python
 az.summary(idata_logistic_penguins_mass, var_names=["β_0", "β_1", "bd"], kind="stats")
-```
-
-Our tabular summary in {numref}`table:logistic_penguins_mass` shows
-that $\beta_1$ is estimated to be 0 indicating there is not enough
-information in the mass covariate to separate the two classes. This is
-not necessarily a bad thing, just the model indicating to us that it
-does not find discernible difference in mass between these two species.
-This becomes quite evident once we plot the data and logistic regression
-fit in {numref}`fig:Logistic_mass`.
-
-```{figure} figures/Logistic_mass.png
-:name: fig:Logistic_mass
-:width: 7.00in
-Plot of the observed data and logistic regression for
-`model_logistic_penguins_mass`. Unlike
-{numref}`fig:Logistic_bill_length` the data does not look very separable
-and our model did discern one as well.
 ```
 
 ```python
@@ -2868,6 +2867,13 @@ there is a belief there is an effect on birth ratio from the parents
 attractiveness more data should be collected to showcase the effect.
 ```
 
+This time we see that estimated effect of attractiveness on gender is
+negligible, there simply was not enough information to affect the
+posterior. As we mentioned in Section {ref}`make_prior_count`
+choosing a prior is both a burden and a blessing. Regardless of which
+you believe it is, it is important to use this statistical tool with an
+explainable and principled choice.
+
 [^10]: Estimate shown in corresponding notebook.
 
 ```python
@@ -2942,14 +2948,6 @@ axes[1].set_title("Posterior samples from informative priors")
 b_0_hat, b_1_hat
 plt.savefig("img/chp03/posteriorinformativelinearregression.png")
 ```
-
-This time we see that estimated effect of attractiveness on gender is
-negligible, there simply was not enough information to affect the
-posterior. As we mentioned in Section {ref}`make_prior_count`
-choosing a prior is both a burden and a blessing. Regardless of which
-you believe it is, it is important to use this statistical tool with an
-explainable and principled choice.
-
 
 (exercises3)=
 

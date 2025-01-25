@@ -765,14 +765,6 @@ a KDE, the mean and the limits of the HDI 94% are represented in the
 figure.
 ```
 
-[^12]: Notice that in principle the number of possible intervals
-    containing a given proportion of the total density is infinite.
-
-```python
-az.plot_posterior(trace)
-plt.savefig("img/chp01/plot_posterior.png")
-```
-
 The HDI is a common choice in Bayesian statistics and *round* values
 like 50% or 95% are commonplace. But ArviZ uses 94% (or 0.94) as the
 default value as seen in both the summary
@@ -784,6 +776,13 @@ values {cite:p}`mcelreath_2020`. Ideally you should choose a value that fits
 your needs {cite:p}`Lakens2018`, or at least acknowledge that you are using a
 default.
 
+[^12]: Notice that in principle the number of possible intervals
+    containing a given proportion of the total density is infinite.
+
+```python
+az.plot_posterior(trace)
+plt.savefig("img/chp01/plot_posterior.png")
+```
 
 (Automating_inference)=
 
@@ -941,6 +940,21 @@ between the first and third plots and then between the second and fourth
 plots.
 ```
 
+As we already mentioned, posterior predictive distributions take into
+account the uncertainty about our estimates.
+{numref}`fig:predictions_distributions` shows that the predictions using
+the mean are less spread than predictions from the posterior predictive
+distribution. This result is not only valid for the mean, we would get a
+similar picture if we change the mean to any other point-estimate.
+
+```{figure} figures/predictions_distributions.png
+:name: fig:predictions_distributions
+:width: 8.00in
+Predictions for the Beta-Binomial model, using the posterior mean (gray
+histogram) vs predictions using the entire posterior, i.e. the posterior
+predictive distribution (blue histogram).
+```
+
 ```python
 fig, axes = plt.subplots(4, 1, figsize=(9, 9))
 
@@ -970,21 +984,6 @@ axes[2].tick_params(axis='both', pad=7)
 axes[2].set_xlabel("θ")
 
 plt.savefig("img/chp01/Bayesian_quartet_distributions.png")
-```
-
-As we already mentioned, posterior predictive distributions take into
-account the uncertainty about our estimates.
-{numref}`fig:predictions_distributions` shows that the predictions using
-the mean are less spread than predictions from the posterior predictive
-distribution. This result is not only valid for the mean, we would get a
-similar picture if we change the mean to any other point-estimate.
-
-```{figure} figures/predictions_distributions.png
-:name: fig:predictions_distributions
-:width: 8.00in
-Predictions for the Beta-Binomial model, using the posterior mean (gray
-histogram) vs predictions using the entire posterior, i.e. the posterior
-predictive distribution (blue histogram).
 ```
 
 ```python

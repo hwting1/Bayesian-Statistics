@@ -6,7 +6,7 @@ jupyter:
       extension: .md
       format_name: markdown
       format_version: '1.3'
-      jupytext_version: 1.16.4
+      jupytext_version: 1.16.6
   kernelspec:
     display_name: Python 3 (ipykernel)
     language: python
@@ -234,6 +234,16 @@ untransformed and on the right transformed. The linearization of the
 nonlinear growth rate is visible on the transformed axes on the right.
 ```
 
+Plotting the fit of the means, along with bands representing the highest
+density interval of the expected length, yields
+{numref}`fig:Baby_Length_non_linear`, in which the means tends to fit
+the curve of the observed relationship. In addition to this visual check
+we can also use `az.compare` to verify the ELPD value for the nonlinear
+model. In your own analysis you can use any transformation function you
+would like. As with any model the important bit is to be able to justify
+your choice whatever it may be, and verify your results are reasonable
+using visual and numerical checks.
+
 ```python
 with pm.Model() as model_baby_sqrt:
     β = pm.Normal("β", sigma=10, shape=2)
@@ -295,17 +305,6 @@ plt.savefig('img/chp04/baby_length_sqrt_fit.png', dpi=300)
 az.compare({"Linear Model":idata_linear,
             "Non Linear Model":idata_sqrt})
 ```
-
-Plotting the fit of the means, along with bands representing the highest
-density interval of the expected length, yields
-{numref}`fig:Baby_Length_non_linear`, in which the means tends to fit
-the curve of the observed relationship. In addition to this visual check
-we can also use `az.compare` to verify the ELPD value for the nonlinear
-model. In your own analysis you can use any transformation function you
-would like. As with any model the important bit is to be able to justify
-your choice whatever it may be, and verify your results are reasonable
-using visual and numerical checks.
-
 
 (varying-uncertainty)=
 
@@ -763,28 +762,6 @@ distribution. Smaller values of $\nu$ put more density into the tails of
 the distribution.
 ```
 
-[^3]: Although the mean is defined only for $\nu > 1$, and the value of
-    $\sigma$ agrees with the standard deviation only when
-    $\nu \to \infty$.
-
-```python
-mean = 5
-sigma = 2
-
-x = np.linspace(-5, 15, 1000)
-fig, ax = plt.subplots(figsize=(10, 4))
-
-ax.plot(x, stats.norm(5,2).pdf(x), label=f"Normal μ={mean}, σ={sigma}", color="C4")
-
-for i, nu in enumerate([1, 2, 20],1):
-    ax.plot(x, stats.t(loc=5, scale=2, df=nu).pdf(x), label=f"Student T μ={mean}, σ={sigma}, ν={nu}", color=f"C{i}")
-
-ax.set_xlim(-5, 18)
-ax.legend(loc="upper right", frameon=False)
-ax.set_yticks([])
-plt.savefig('img/chp04/studentt_normal_comparison.png', dpi=300)
-```
-
 This can be shown in an example. Say you own a restaurant in Argentina
 and you sell empanadas [^4]. Over time you have collected data on the
 number of customers per day and the total amount of Argentine pesos your
@@ -809,6 +786,28 @@ returned. The 5 dots at the top of the chart are considered outliers.
 
 [^5]: The commemoration of the first Argentine government and the
     Argentine independence day respectively.
+
+[^3]: Although the mean is defined only for $\nu > 1$, and the value of
+    $\sigma$ agrees with the standard deviation only when
+    $\nu \to \infty$.
+
+```python
+mean = 5
+sigma = 2
+
+x = np.linspace(-5, 15, 1000)
+fig, ax = plt.subplots(figsize=(10, 4))
+
+ax.plot(x, stats.norm(5,2).pdf(x), label=f"Normal μ={mean}, σ={sigma}", color="C4")
+
+for i, nu in enumerate([1, 2, 20],1):
+    ax.plot(x, stats.t(loc=5, scale=2, df=nu).pdf(x), label=f"Student T μ={mean}, σ={sigma}, ν={nu}", color=f"C{i}")
+
+ax.set_xlim(-5, 18)
+ax.legend(loc="upper right", frameon=False)
+ax.set_yticks([])
+plt.savefig('img/chp04/studentt_normal_comparison.png', dpi=300)
+```
 
 ```python
 def generate_sales(*, days, mean, std, label):
@@ -1128,6 +1127,14 @@ organization has 3 data points for the daily sales of salads, but has
 lots of data on the sales of pizza and sandwiches.
 ```
 
+From both expert knowledge and data, there is agreement that there are
+similarities between the sales of these 3 food categories. They all
+appeal to the same type of customer, represent the same "food category\"
+of *quick to go* food but they are not exactly the same either. In the
+following sections we will discuss how to model this
+*similarity-yet-disimilarity* but let us start with the simpler case,
+all groups are unrelated to each other.
+
 ```python
 def generate_sales(*, days, mean, std, label):
     np.random.seed(0)
@@ -1180,15 +1187,6 @@ ax.legend()
 
 plt.savefig('img/chp04/restaurant_order_scatter.png', dpi=300)
 ```
-
-From both expert knowledge and data, there is agreement that there are
-similarities between the sales of these 3 food categories. They all
-appeal to the same type of customer, represent the same "food category\"
-of *quick to go* food but they are not exactly the same either. In the
-following sections we will discuss how to model this
-*similarity-yet-disimilarity* but let us start with the simpler case,
-all groups are unrelated to each other.
-
 
 (unpooled-parameters)=
 
@@ -1329,6 +1327,16 @@ group as there are not as many data points relative to the pizza and
 sandwich groups.
 ```
 
+The unpooled model is no different than if we have created three
+separated models with subsets of the data, exactly as we did in
+Section {ref}`comparing_distributions`, where the
+parameters of each group were estimated separately so we can consider
+the unpooled model architecture syntactic sugar for modeling independent
+linear regressions of each group. More importantly now we can use the
+unpooled model and the estimated parameters from it as a baseline to
+compare other models in the following sections, particularly to
+understand if the extra complexity is justified.
+
 ```python
 axes = az.plot_forest([idata_sales_unpooled],
                       model_names = ["Unpooled",],
@@ -1344,17 +1352,6 @@ axes = az.plot_forest([idata_sales_unpooled],
 axes[0].set_title("σ parameter estimates 94% HDI")
 plt.savefig("img/chp04/salad_sales_basic_regression_forestplot_sigma.png")
 ```
-
-The unpooled model is no different than if we have created three
-separated models with subsets of the data, exactly as we did in
-Section {ref}`comparing_distributions`, where the
-parameters of each group were estimated separately so we can consider
-the unpooled model architecture syntactic sugar for modeling independent
-linear regressions of each group. More importantly now we can use the
-unpooled model and the estimated parameters from it as a baseline to
-compare other models in the following sections, particularly to
-understand if the extra complexity is justified.
-
 
 (pooled-parameters)=
 

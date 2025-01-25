@@ -439,6 +439,25 @@ can see each sub-panel in the second row as a random sample from a prior
 distribution over the *spline space*.
 ```
 
+In this example we generated the $\beta_i$ coefficients by sampling from
+a Half Normal distribution (Line 17 in Code Block
+[splines_patsy_plot](splines_patsy_plot)). Thus, each
+panel in {numref}`fig:splines_weighted` is showing only one realization
+of a probability distribution over splines. You can easily see this is
+true by removing the random seed and running Code Block
+[splines_patsy_plot](splines_patsy_plot) a few times, each
+time you will see a different spline. Additionally, you may also try
+replacing the Half Normal distribution, with another one like the
+Normal, Exponential, etc. {numref}`fig:splines_realizations` shows four
+realization of cubic splines.
+
+```{figure} figures/splines_realizations.png
+:name: fig:splines_realizations
+:width: 8.00in
+Four realizations of cubic splines with $\beta_i$ coefficients sampled
+from a Half Normal distribution.
+```
+
 [^8]: In the limit of infinite degree a B-spline will span the entire
     real line and not only that, it will converge to a Gaussian
     <https://www.youtube.com/watch/9CS7j5I6aOc>.
@@ -481,25 +500,6 @@ for idx, (B, title) in enumerate(zip((B0, B1, B3),
     axes[0, idx].set_title(title)
 
 plt.savefig('img/chp05/splines_weighted.png')
-```
-
-In this example we generated the $\beta_i$ coefficients by sampling from
-a Half Normal distribution (Line 17 in Code Block
-[splines_patsy_plot](splines_patsy_plot)). Thus, each
-panel in {numref}`fig:splines_weighted` is showing only one realization
-of a probability distribution over splines. You can easily see this is
-true by removing the random seed and running Code Block
-[splines_patsy_plot](splines_patsy_plot) a few times, each
-time you will see a different spline. Additionally, you may also try
-replacing the Half Normal distribution, with another one like the
-Normal, Exponential, etc. {numref}`fig:splines_realizations` shows four
-realization of cubic splines.
-
-```{figure} figures/splines_realizations.png
-:name: fig:splines_realizations
-:width: 8.00in
-Four realizations of cubic splines with $\beta_i$ coefficients sampled
-from a Half Normal distribution.
 ```
 
 ```python
@@ -581,20 +581,6 @@ B3 = dmatrix("bs(x, knots=knots, degree=3,include_intercept=True) - 1",
              {"x": x, "knots":knots})
 ```
 
-{numref}`fig:design_matrices` represents the 3 design matrices computed
-with Code Block [splines_patsy](splines_patsy). To better
-grasp what Patsy is doing we also recommend you use Jupyter notebook/lab
-or your favorite IDE to inspect the objects `B0`, `B1` and `B2`.
-
-```{figure} figures/design_matrices.png
-:name: fig:design_matrices
-:width: 8.00in
-Design matrices generated with Patsy in Code Block
-[splines_patsy](splines_patsy). The color goes from black
-(1) to light-gray (0), the number of columns is the number of B-splines
-and the number of rows the number of datapoints.
-```
-
 [^10]: If interested you can check
     <https://en.wikipedia.org/wiki/De_Boor's_algorithm>.
 
@@ -607,6 +593,20 @@ knots = [0.25, 0.5, 0.75]
 B0 = dmatrix("bs(x, knots=knots, degree=0, include_intercept=True) - 1", {"x": x, "knots":knots})
 B1 = dmatrix("bs(x, knots=knots, degree=1, include_intercept=True) - 1", {"x": x, "knots":knots})
 B3 = dmatrix("bs(x, knots=knots, degree=3, include_intercept=True) - 1", {"x": x, "knots":knots})
+```
+
+{numref}`fig:design_matrices` represents the 3 design matrices computed
+with Code Block [splines_patsy](splines_patsy). To better
+grasp what Patsy is doing we also recommend you use Jupyter notebook/lab
+or your favorite IDE to inspect the objects `B0`, `B1` and `B2`.
+
+```{figure} figures/design_matrices.png
+:name: fig:design_matrices
+:width: 8.00in
+Design matrices generated with Patsy in Code Block
+[splines_patsy](splines_patsy). The color goes from black
+(1) to light-gray (0), the number of columns is the number of B-splines
+and the number of rows the number of datapoints.
 ```
 
 The first subplot of {numref}`fig:design_matrices` corresponds to `B0`,
@@ -664,6 +664,11 @@ for idx, (B, title) in enumerate(zip((B0, B1, B3),
     axes[0, idx].set_title(title)
 ```
 
+So far we have explored a couple of examples to gain intuition into what
+splines are and how to automate their creation with the help of Patsy.
+We can now move forward into computing the weights. Let us see how we
+can do that in a Bayesian model with PyMC3.
+
 ```python
 fig, axes = plt.subplots(1, 3, sharey=True)
 for idx, (B, title, ax) in enumerate(zip((B0, B1, B3),
@@ -684,11 +689,6 @@ axes[0].set_ylabel("x", rotation=0, labelpad=15)
 fig.colorbar(cax, aspect=40, ticks=[0, 0.5, 1])
 plt.savefig('img/chp05/design_matrices.png')
 ```
-
-So far we have explored a couple of examples to gain intuition into what
-splines are and how to automate their creation with the help of Patsy.
-We can now move forward into computing the weights. Let us see how we
-can do that in a Bayesian model with PyMC3.
 
 <!-- #region -->
 (fitting-splines-in-pymc3)=
@@ -880,6 +880,15 @@ represents the 94% HDI interval (of the mean) and the blue curve
 represents the mean trend.
 ```
 
+In this bike rental example we are dealing with a circular variable,
+meaning that hour 0 is equal to the hour 24. This may be more or less
+obvious to us, but it is definitely not obvious to our model. Patsy
+offers a simple solution to tell our model that the variable is
+circular. Instead of defining the design matrix using `bs` we can use
+`cc`, this is a cubic spline that is *circular-aware*. We recommend you
+check the Patsy documentation for more details and explore using `cc` in
+the previous model and compare results.
+
 ```python
 _, ax = plt.subplots(1, 1, figsize=(10, 4))
 
@@ -892,15 +901,6 @@ ax.set_xlabel("hour")
 ax.set_ylabel("count")
 plt.savefig("img/chp05/bikes_spline_data.png")
 ```
-
-In this bike rental example we are dealing with a circular variable,
-meaning that hour 0 is equal to the hour 24. This may be more or less
-obvious to us, but it is definitely not obvious to our model. Patsy
-offers a simple solution to tell our model that the variable is
-circular. Instead of defining the design matrix using `bs` we can use
-`cc`, this is a cubic spline that is *circular-aware*. We recommend you
-check the Patsy documentation for more details and explore using `cc` in
-the previous model and compare results.
 
 <!-- #region -->
 (choosing-knots-and-prior-for-splines)=
@@ -1009,6 +1009,15 @@ model according to LOO. Model `m_3k` is highlighted in black, while the
 rest of the models are in grayed-out as they have being assigned a
 weight of zero (see {numref}`tab:loo_splines`).
 ```
+
+One piece of advice that may help decide the locations of knots is to
+place them based on quantiles, instead of uniformly. In Code Block
+[knot_list](knot_list) we could have defined the
+`knot_list` using
+`knot_list = np.quantile(data.hour, np.linspace(0, 1, num_knots))`. In
+this way we will be putting more knots where we have more data and less
+knots where less data. This translates into a more flexible
+approximation for data-richer portions.
 <!-- #endregion -->
 
 ```python
@@ -1059,16 +1068,6 @@ ax.set_xlabel("hour")
 ax.set_ylabel("count")
 plt.savefig("img/chp05/bikes_spline_loo_knots.png")
 ```
-
-One piece of advice that may help decide the locations of knots is to
-place them based on quantiles, instead of uniformly. In Code Block
-[knot_list](knot_list) we could have defined the
-`knot_list` using
-`knot_list = np.quantile(data.hour, np.linspace(0, 1, num_knots))`. In
-this way we will be putting more knots where we have more data and less
-knots where less data. This translates into a more flexible
-approximation for data-richer portions.
-
 
 (regularizing-prior-for-splines)=
 
