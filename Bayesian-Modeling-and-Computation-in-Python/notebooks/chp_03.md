@@ -42,7 +42,7 @@ workflow, and more comfortable conducting Bayesian workflows with PyMC3,
 TFP and ArviZ.
 
 
-## 3.1 Comparing Two (or More) Groups
+## 3.1. Comparing Two (or More) Groups
 
 If you are looking for something to compare it is hard to beat penguins.
 After all, what is not to like about these cute flightless birds? Our
@@ -464,7 +464,7 @@ plt.savefig("img/chp03/independent_model_forestplotsigma.png")
 
 (comparing-two-ppls)=
 
-### 3.1.1 Comparing Two PPLs
+### 3.1.1. Comparing Two PPLs
 
 Before expanding on the statistical and modeling ideas further, we will
 take a moment to talk about the probabilistic programming languages and
@@ -829,7 +829,7 @@ polyglot.
 
 (linear-regression)=
 
-## 3.2 Linear Regression
+## 3.2. Linear Regression
 
 In the previous section we modeled the distribution of penguin mass by
 setting prior distributions over the mean and standard deviation of a
@@ -989,7 +989,7 @@ plt.savefig("img/chp03/3d_linear_regression.png", bbox_inches="tight", dpi=300)
 
 (linear_regression_intro)=
 
-### 3.2.1 Linear Penguins
+### 3.2.1. Linear Penguins
 
 If we recall our penguins we were interested using additional data to
 better estimate the mean mass of a group of penguins. Using linear
@@ -1161,7 +1161,7 @@ plt.savefig('img/chp03/flipper_length_mass_regression.png', dpi=300)
 
 (chp2_predictions)=
 
-### 3.2.2 Predictions
+### 3.2.2. Predictions
 
 In the {ref}`linear_regression_intro` we estimated a linear relationship
 between flipper length and mass. Another use of regression is to
@@ -1249,7 +1249,7 @@ uncertainty about our estimates, as seen from Equation
 
 (centering)=
 
-### 3.2.3 Centering
+### 3.2.3. Centering
 
 ```python
 adelie_flipper_length_obs = penguins.loc[adelie_mask, "flipper_length_mm"].values
@@ -1432,7 +1432,7 @@ Analysis and Generalized Linear Models {cite:p}`fox_fox_2016`.
 
 (multiple-linear-regression)=
 
-## 3.3 Multiple Linear Regression
+## 3.3. Multiple Linear Regression
 
 In many species there is a dimorphism, or difference, between different
 sexes. The study of sexual dimorphism in penguins actually was the
@@ -1650,7 +1650,7 @@ plt.savefig("img/chp03/singlespecies_multipleregression_forest_sigma_comparison.
 
 (linear_counter_factuals)=
 
-### 3.3.1 Counterfactuals
+### 3.3.1. Counterfactuals
 
 In Code Block [penguins_ppd](penguins_ppd) we made a
 prediction using parameters fitted in a model with a single covariate
@@ -1870,7 +1870,7 @@ a brief discussion)
 
 (generalized-linear-models)=
 
-## 3.4 Generalized Linear Models
+## 3.4. Generalized Linear Models
 
 All linear models discussed so far assumed the distribution of
 observations are conditionally Gaussian which works well in many
@@ -1916,7 +1916,7 @@ application of these models to many more scenarios [^9].
     value.
 
 
-### 3.4.1 Logistic Regression
+### 3.4.1. Logistic Regression
 
 One of the most common generalized linear model is the logistic
 regression. It is particularly useful in modeling data where there are
@@ -1980,7 +1980,7 @@ is greater than 0.5.
 
 (classifying_penguins)=
 
-### 3.4.2 Classifying Penguins
+### 3.4.2. Classifying Penguins
 
 In the previous sections we used the sex, and bill length of a penguin
 to estimate the mass of a penguin. Lets now alter the question, if we
@@ -2499,7 +2499,7 @@ az.compare({"mass": idata_logistic_penguins_mass,
 <!-- #region -->
 (log_odds)=
 
-### 3.4.3 Interpreting Log Odds
+### 3.4.3. Interpreting Log Odds
 
 In a logistic regression the slope is telling you the increase in log
 odds units when x is incremented one unit. Odds most simply are the
@@ -2640,7 +2640,7 @@ special.expit(val_2) - special.expit(val_1)
 
 (picking-priors-in-regression-models)=
 
-## 3.5 Picking Priors in Regression Models
+## 3.5. Picking Priors in Regression Models
 
 Now that we are familiar with generalized linear models let us focus on
 the prior and its effect on posterior estimation. We will be borrowing
@@ -2951,7 +2951,7 @@ plt.savefig("img/chp03/posteriorinformativelinearregression.png")
 
 (exercises3)=
 
-## 3.6 Exercises
+## 3.6. Exercises
 
 
 **E1.** Comparisons are part of everyday life. What is

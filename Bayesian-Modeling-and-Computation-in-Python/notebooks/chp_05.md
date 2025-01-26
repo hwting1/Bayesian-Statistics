@@ -28,7 +28,7 @@ all be combined to produce a useful global solution. Let us see how.
 
 (polynomial-regression)=
 
-## 5.1 Polynomial Regression
+## 5.1. Polynomial Regression
 
 As we already saw in Chapter [3](chap2), we can write a linear
 model as:
@@ -177,7 +177,7 @@ the location of the point.
 
 (expanding_feature_space)=
 
-## 5.2 Expanding the Feature Space
+## 5.2. Expanding the Feature Space
 
 At a conceptual level we can think of polynomial regression as a recipe
 for creating new predictors, or in more formal terms to **expanding the
@@ -313,7 +313,7 @@ the discussion to a family of basis functions known as B-splines [^6].
     will see in Chapter [6](chap4).
 
 
-## 5.3 Introducing Splines
+## 5.3. Introducing Splines
 
 Splines can be seen as an attempt to use the flexibility of polynomials
 but keeping them under control and thus obtaining a model with overall
@@ -539,7 +539,7 @@ defaults.
     for further intuition
 
 
-## Building the Design Matrix using Patsy
+## 5.4. Building the Design Matrix using Patsy
 
 In Figures {numref}`fig:splines_basis` and
 {numref}`fig:splines_weighted` we plot the B-splines, but so far we have
@@ -693,7 +693,7 @@ plt.savefig('img/chp05/design_matrices.png')
 <!-- #region -->
 (fitting-splines-in-pymc3)=
 
-## 5.3 Fitting Splines in PyMC3
+## 5.5. Fitting Splines in PyMC3
 
 In this section we are going to use PyMC3 to obtain the values of the
 regression coefficients $\beta$ by fitting a set of B-splines to the
@@ -905,7 +905,7 @@ plt.savefig("img/chp05/bikes_spline_data.png")
 <!-- #region -->
 (choosing-knots-and-prior-for-splines)=
 
-## 5.6 Choosing Knots and Prior for Splines
+## 5.6. Choosing Knots and Prior for Splines
 
 One modeling decision we have to make when working with splines is to
 choose the number and location of the knots. This can be a little bit
@@ -1071,7 +1071,7 @@ plt.savefig("img/chp05/bikes_spline_loo_knots.png")
 
 (regularizing-prior-for-splines)=
 
-### 5.6.1 Regularizing Prior for Splines
+### 5.6.1. Regularizing Prior for Splines
 
 As choosing too few knots could lead to under-fitting and too many to
 overfitting, we may want to use a *rather large* number of knots and
@@ -1196,7 +1196,7 @@ plt.savefig("img/chp05/bikes_spline_data_grw.png")
 
 (modeling-co2-uptake-with-splines)=
 
-## 5.7 Modeling CO₂ Uptake with Splines
+## 5.7. Modeling CO₂ Uptake with Splines
 
 For a final example of splines we are going to use data from an
 experimental study {cite:p}`Potvin1990, Pedersen2019`. The experiment consists
@@ -1545,7 +1545,7 @@ plt.savefig("img/chp05/sp_compare.png")
 
 (exercises5)=
 
-## 5.8 Exercises
+## 5.8. Exercises
 
 
 **5E1.**. Splines are quite powerful so its good to know

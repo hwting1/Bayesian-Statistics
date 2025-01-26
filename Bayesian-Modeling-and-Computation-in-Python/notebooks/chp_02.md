@@ -35,7 +35,7 @@ inference results, and model comparison.
 <!-- #region -->
 (there-is-life-after-inference-and-before-too)=
 
-## 2.1 There is Life After Inference, and Before Too!
+## 2.1. There is Life After Inference, and Before Too!
 
 A successful Bayesian modeling approach requires performing additional
 tasks beyond inference [^2]. Such as:
@@ -97,7 +97,7 @@ computational features, or fundamental mathematics.
 
 (prior_predictive_checks)=
 
-## 2.2 Understanding Your Assumptions
+## 2.2. Understanding Your Assumptions
 
 As we discussed in Section {ref}`make_prior_count`, "what is
 the best-ever prior?\" is a tempting question to ask. However, it is
@@ -327,7 +327,7 @@ environment.
 
 (posterior_pd)=
 
-## 2.3 Understanding Your Predictions
+## 2.3. Understanding Your Predictions
 
 As we can use synthetic data, that is generated data, from the prior
 predictive distribution to help us inspect our model, we can perform a
@@ -642,7 +642,7 @@ plt.savefig("img/chp02/posterior_predictive_many_examples.png")
 <!-- #region -->
 (diagnosing_inference)=
 
-## 2.4 Diagnosing Numerical Inference
+## 2.4. Diagnosing Numerical Inference
 
 Using numerical methods to approximate the posterior distribution allows
 us to solve Bayesian models that could be tedious to solve with pen and
@@ -723,7 +723,7 @@ in the model.
 <!-- #region -->
 (ess)=
 
-### 2.4.1 Effective Sample Size
+### 2.4.1. Effective Sample Size
 
 When using MCMC sampling methods, it is reasonable to wonder if a
 particular sample is large enough to confidently compute the quantities
@@ -860,7 +860,7 @@ plt.savefig("img/chp02/plot_ess.png")
 <!-- #region -->
 (potential-scale-reduction-factor-hat-r)=
 
-### 2.4.2 Potential Scale Reduction Factor $\hat R$
+### 2.4.2. Potential Scale Reduction Factor $\hat R$
 
 Under very general conditions Markov chain Monte Carlo methods have
 theoretical guarantees that they will get the right answer irrespective
@@ -920,7 +920,7 @@ az.rhat(chains)
 <!-- #region -->
 (Monte_Carlo_standard_error)=
 
-### 2.4.3 Monte Carlo Standard Error
+### 2.4.3. Monte Carlo Standard Error
 
 When using MCMC methods we introduce an additional layer of uncertainty
 as we are approximating the posterior with a finite number of samples.
@@ -1039,7 +1039,7 @@ sample size and finally the $\hat R$ diagnostic.
 <!-- #region -->
 (trace-plots)=
 
-### 2.4.4 Trace Plots
+### 2.4.4. Trace Plots
 
 Trace plots are probably the most popular plots in Bayesian literature.
 They are often the first plot we make after inference, to visually check
@@ -1099,7 +1099,7 @@ parameter space with a curvature that is too different from the rest.
 <!-- #region -->
 (autocorr_plot)=
 
-### 2.4.5 Autocorrelation Plots
+### 2.4.5. Autocorrelation Plots
 
 As we saw when we discussed the effective sample size, autocorrelation
 decreases the actual amount of information contained in a sample and
@@ -1136,7 +1136,7 @@ plt.savefig('img/chp02/autocorrelation_plot.png')
 <!-- #region -->
 (rank-plots)=
 
-### 2.4.6 Rank Plots
+### 2.4.6. Rank Plots
 
 Rank plots are another visual diagnostic we can use to compare the
 sampling behavior both within and between chains. Rank plots, simply
@@ -1221,7 +1221,7 @@ that our model needs further refinements.
 
 (divergences)=
 
-### 2.4.7 Divergences
+### 2.4.7. Divergences
 
 So far we have been diagnosing how well a sampler works by studying the
 generated samples. Another way to perform a diagnostic is by monitoring
@@ -1428,7 +1428,7 @@ Bob example in Section {ref}`conjugate_priors`).
 
 (sampler-parameters-and-other-diagnostics)=
 
-### 2.4.8 Sampler Parameters and Other Diagnostics
+### 2.4.8. Sampler Parameters and Other Diagnostics
 
 Most sampler methods have hyperparameters that affect the sampler
 performance. While most PPLs try to use sensible defaults, in practice,
@@ -1470,7 +1470,7 @@ many more examples.
 
 (model_cmp)=
 
-## 2.5 Model Comparison
+## 2.5. Model Comparison
 
 Usually we want to build models that are not too simple that they miss
 valuable information in our data nor too complex that they fit the noise
@@ -1543,7 +1543,7 @@ in the next section.
 
 (CV_and_LOO)=
 
-### 2.5.1 Cross-validation and LOO
+### 2.5.1. Cross-validation and LOO
 
 Cross-validation (CV) is a method of estimating out-of-sample predictive
 accuracy. This method requires re-fitting a model many times, each time
@@ -1809,7 +1809,7 @@ az.plot_compare(cmp, figsize=(9, 3))
 plt.savefig("img/chp02/compare_dummy.png")
 ```
 
-### 2.5.2 Expected Log Predictive Density
+### 2.5.2. Expected Log Predictive Density
 
 In the previous section we computed a value of the ELPD for each model.
 Since this is a *global* comparison it reduces a model, and data, to a
@@ -1849,7 +1849,7 @@ plt.savefig("img/chp02/elpd_dummy.png")
 
 (k-paretto)=
 
-### 2.5.3 Pareto Shape Parameter
+### 2.5.3. Pareto Shape Parameter
 
 As we already mentioned we use LOO to approximate
 $\text{ELPD}_\text{LOO-CV}$. This approximation involves the computation
@@ -1932,7 +1932,7 @@ plt.savefig("img/chp02/elpd_and_khat.png")
 
 (interpreting-p_loo-when-pareto-hat-kappa-is-large)=
 
-### 2.5.4 Interpreting p_loo When Pareto $\hat \kappa$ is Large
+### 2.5.4. Interpreting p_loo When Pareto $\hat \kappa$ is Large
 
 As previously said p_loo can be loosely interpreted as the estimated
 effective number of parameters in a model. Nevertheless, for models with
@@ -1971,7 +1971,7 @@ distribution, or using mixture likelihood.
 
 (loo-pit)=
 
-### 2.5.5 LOO-PIT
+### 2.5.5. LOO-PIT
 
 As we just saw in Sections {ref}`elpd_plots` and {ref}`k-paretto` model
 comparison, and LOO in particular, can be used for purposes other than
@@ -2047,7 +2047,7 @@ plt.savefig("img/chp02/loo_pit_dummy.png")
 
 (model_averaging)=
 
-### 2.5.6 Model Averaging
+### 2.5.6. Model Averaging
 
 Model averaging can be justified as being Bayesian about model
 uncertainty as we are Bayesian about parameter uncertainty. If we can
@@ -2137,7 +2137,7 @@ makes a lot of sense.
 
 (exercises2)=
 
-## 2.6 Exercises
+## 2.6. Exercises
 
 
 **2E1.** Using your own words, what are the main

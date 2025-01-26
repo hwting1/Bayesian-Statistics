@@ -31,7 +31,7 @@ circumstances.
 
 (transforming_covariates)=
 
-## 4.1 Transforming Covariates
+## 4.1. Transforming Covariates
 
 In Chapter [3](chap2) we saw that with a linear model and an
 identity link function, a unit change in $x_i$ led to a $\beta_i$ change
@@ -308,7 +308,7 @@ az.compare({"Linear Model":idata_linear,
 
 (varying-uncertainty)=
 
-## 4.2 Varying Uncertainty
+## 4.2. Varying Uncertainty
 
 Thus far we have used linear models to model the mean of $Y$ while
 assuming the variance of the residuals [^1] is constant along the range
@@ -448,7 +448,7 @@ plt.savefig('img/chp04/baby_length_sqrt_vv_fit_include_error.png', dpi=300)
 
 (interaction-effects)=
 
-## 4.3 Interaction Effects
+## 4.3. Interaction Effects
 
 In all our models thus far, we have assumed the effect of one covariate
 to the response variable is independent of any other covariates. This is
@@ -712,7 +712,7 @@ that arise from modeling all the data together.
 
 (robust_regression)=
 
-## 4.4 Robust Regression
+## 4.4. Robust Regression
 
 Outliers, as the name suggests, are observations that lie outside of the
 range "reasonable expectation\". Outliers are undesirable, as one, or
@@ -1104,7 +1104,7 @@ model.
 
 (multilevel_models)=
 
-## 4.5 Pooling, Multilevel Models, and Mixed Effects
+## 4.5. Pooling, Multilevel Models, and Mixed Effects
 
 Often we have dataset that contain additional nested structures among
 the predictors, which gives some hierarchical way to group the data. We
@@ -1190,7 +1190,7 @@ plt.savefig('img/chp04/restaurant_order_scatter.png', dpi=300)
 
 (unpooled-parameters)=
 
-### 4.5.1 Unpooled Parameters
+### 4.5.1. Unpooled Parameters
 
 We can create a regression model where we treat each group, in this case
 food category, as completely separated from the others. This is
@@ -1355,7 +1355,7 @@ plt.savefig("img/chp04/salad_sales_basic_regression_forestplot_sigma.png")
 
 (pooled-parameters)=
 
-### 4.5.2 Pooled Parameters
+### 4.5.2. Pooled Parameters
 
 If there are unpooled parameters, you might guess there are pooled
 parameters and you would be correct. As the name suggests pooled
@@ -1511,7 +1511,7 @@ plt.savefig("img/chp04/salad_sales_basic_regression_scatter_pooled.png")
 ```
 
 <!-- #region -->
-### 4.5.3 Mixing Group and Common Parameters
+### 4.5.3. Mixing Group and Common Parameters
 
 In the unpooled approach we get the benefit of preserving the
 differences in our groups, and thus getting an estimated set of
@@ -1704,7 +1704,7 @@ axes[0].set_title("Comparison of β parameters 94% HDI");
 
 (hierarchical-models)=
 
-## 4.6 Hierarchical Models
+## 4.6. Hierarchical Models
 
 In our data treatment thus far we have had two options for groups,
 pooled where there is no distinction between groups, and unpooled where
@@ -1988,7 +1988,7 @@ on a single model.
 
 (model_geometry)=
 
-### 4.6.1 Posterior Geometry Matters
+### 4.6.1. Posterior Geometry Matters
 
 So far we have largely focused on the structure and math behind the
 model, and assumed our sampler would be able to provide us an
@@ -2469,7 +2469,7 @@ plt.savefig("img/chp04/Salad_Sales_Hierarchical_Comparison.png")
 
 (predictions-at-multiple-levels)=
 
-### 4.6.2 Predictions at Multiple Levels
+### 4.6.2. Predictions at Multiple Levels
 
 A subtle feature of hierarchical models is that they are able to make
 estimates at multiple levels. While seemingly obvious this is very
@@ -2656,7 +2656,7 @@ point/group/etc being close to each other.
 
 (priors-for-multilevel-models)=
 
-### 4.6.3 Priors for Multilevel Models
+### 4.6.3. Priors for Multilevel Models
 
 Prior choice is all the more important for multilevel models, because of
 how the prior interacts with the informativeness of the likelihood, as
@@ -2707,7 +2707,7 @@ tools such as prior predictive distributions to make an informed choice.
 
 (exercises4)=
 
-## 4.7 Exercises
+## 4.7. Exercises
 
 
 **4E1.** What are examples of covariate-response

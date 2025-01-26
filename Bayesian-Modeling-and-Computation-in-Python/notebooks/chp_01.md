@@ -36,7 +36,7 @@ explored and expanded throughout the rest of the book.
 
 (bayesian_modeling)=
 
-## 1.1 Bayesian Modeling
+## 1.1. Bayesian Modeling
 
 A conceptual model is a representation of a system, made of the
 composition of concepts that are used to help people know, understand,
@@ -88,7 +88,7 @@ positive outcomes for the practitioner and their peers.
 
 (bayesian-models)=
 
-### 1.1.1 Bayesian Models
+### 1.1.1. Bayesian Models
 
 Bayesian models, computational or otherwise, have two defining
 characteristics:
@@ -143,7 +143,7 @@ rediscuss these ideas.
 
 (Bayesian_inference)=
 
-### Bayesian Inference
+### 1.1.2. Bayesian Inference
 
 In colloquial terms, inference is associated with obtaining conclusions
 based on evidence and reasoning. Bayesian inference is a particular form
@@ -430,7 +430,7 @@ of these!
 
 (sampling_methods_intro)=
 
-## A DIY Sampler, Do Not Try This at Home
+## 1.2. A DIY Sampler, Do Not Try This at Home
 
 Closed form expressions for the integral in Equation
 {eq}`eq:marginal_likelihood` are not always possible and thus much of
@@ -786,7 +786,7 @@ plt.savefig("img/chp01/plot_posterior.png")
 
 (Automating_inference)=
 
-## 1.3 Say Yes to Automating Inference, Say No to Automated Model Building
+## 1.3. Say Yes to Automating Inference, Say No to Automated Model Building
 
 Instead of writing our own sampler and having to define our models using
 `scipy.stats` method we can leverage the aid of **Probabilistic
@@ -1002,7 +1002,7 @@ plt.savefig("img/chp01/predictions_distributions.png")
 
 (make_prior_count)=
 
-## 1.4 A Few Options to Quantify Your Prior Information
+## 1.4. A Few Options to Quantify Your Prior Information
 
 Having to choose a prior distribution is portrayed both as a burden and
 as a blessing. We choose to affirm that is a necessity, if you are not
@@ -1034,7 +1034,7 @@ choose priors in more practical settings.
 
 (conjugate_priors)=
 
-### 1.4.1 Conjugate Priors
+### 1.4.1. Conjugate Priors
 
 A prior is conjugate to a likelihood if the posterior belongs to the
 same family of distributions as the prior. For example, if the
@@ -1243,7 +1243,7 @@ half success or maybe one trial with undetermined outcome. Spooky!
 
 (objective-priors)=
 
-### 1.4.2 Objective Priors
+### 1.4.2. Objective Priors
 
 In the absence of prior information, it sounds reasonable to follow the
 *principle of indifference* also known as the *principle of insufficient
@@ -1415,7 +1415,7 @@ for complicated models.
 <!-- #region -->
 (maximum-entropy-priors)=
 
-### 1.4.3 Maximum Entropy Priors
+### 1.4.3. Maximum Entropy Priors
 
 Yet another way to justify a choice of priors is to pick the prior with
 the highest entropy. If we are totally indifferent about the plausible
@@ -1631,7 +1631,7 @@ are difficult to derive.
 
 (weakly-informative-priors-and-regularization-priors)=
 
-### 1.4.4 Weakly Informative Priors and Regularization Priors
+### 1.4.4. Weakly Informative Priors and Regularization Priors
 
 In previous sections we used general procedures to generate vague,
 non-informative priors designed to not put *too much* information into
@@ -1740,7 +1740,7 @@ data. We will discuss more about there topics in Sections
 
 (using-prior-predictive-distributions-to-assess-priors)=
 
-### 1.4.5 Using Prior Predictive Distributions to Assess Priors
+### 1.4.5. Using Prior Predictive Distributions to Assess Priors
 
 When evaluating the choice of priors, the prior predictive distribution
 shown in {ref}`Automating_inference` is a handy tool. By sampling from
@@ -1763,7 +1763,7 @@ prior predictive samples and use them to choose reasonable priors.
 
 (exercises1)=
 
-## 1.5 Exercises
+## 1.5. Exercises
 
 Problems are labeled Easy (E), Medium (M), and Hard (H).
 
