@@ -166,7 +166,7 @@ could write:
 \begin{split}
 \sigma &\sim \mathcal{HN}(\sigma_{\sigma}) \\
 \text{p\_goal} &= 2\Phi\left(\frac{\tan^{-1}\left(\frac{L}{x}\right)}{\sigma}\right) - 1 \\
-Y &\sim \text{Bin}(n=1, p=\texttt{p\_goal})
+Y &\sim \text{Bin}(n=1, p=\text{p\_goal})
 
 \end{split}
 ```
